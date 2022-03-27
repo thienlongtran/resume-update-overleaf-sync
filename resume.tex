@@ -1,0 +1,256 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+\usepackage{fontawesome}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADER SETINGS----------
+\def \linkedinicon {\faLinkedin}
+\def \linkedinlink {https://www.linkedin.com/in/thienlongtran}
+\def \linkedintext {/thienlongtran}
+
+\def \emailicon {\faEnvelope}
+\def \emaillink {mailto:ttran384@gatech.edu}
+\def \emailtext {ttran384@gatech.edu}
+
+\def \githubicon {\faGithub}
+\def \githublink {https://github.com/thienlongtran}
+\def \githubtext {/thienlongtran}
+
+\def \websiteicon {\faGlobe}
+\def \websitelink {https://www.thienlongtran.com/}
+\def \websitetext {/thienlongtran.com}
+
+\def \phoneicon {\faPhone}
+\def \phonelink {tel:346-204-9381}
+\def \phonetext {(346)-204-9381}
+
+\definecolor{LinkColor}{HTML}{3e70bb}
+
+\def \linkedin {\linkedinicon\hspace{3pt}\textcolor{LinkColor}{\href{\linkedinlink}{\linkedintext}}}
+\def \email {\emailicon\hspace{3pt}\textcolor{LinkColor}{\href{\emaillink}{\emailtext}}}
+
+\def \github {\githubicon \hspace{3pt}\textcolor{LinkColor}{\href{\githublink}{\githubtext}}}
+
+\def \website {\websiteicon\hspace{3pt}\textcolor{LinkColor}{\href{\websitelink}{\websitetext}}}
+
+\def \phone {\phoneicon\hspace{3pt}\textcolor{LinkColor}{\href{\phonelink}{\phonetext}}}
+
+
+%----------HEADING----------
+% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
+%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+% \end{tabular*}
+
+\begin{center}
+    \textbf{\Huge \scshape Thien Tran} \\ \vspace{1pt}
+    {\email} $|$ 
+    {\phone} $|$ 
+    {\website} $|$
+    {\linkedin} $|$
+    {\github}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Georgia Institute of Technology}{January 2022 - December 2023 (Expected)}
+      {Master of Science in Computer Science}{Atlanta, GA}
+      \resumeItemListStart
+        \resumeItem{\textbf{Relevant Coursework:} Knowledge-Based AI}
+        
+      \resumeItemListEnd
+    \resumeSubheading
+      {University of New Orleans}{August 2019 - December 2021}
+      {Bachelor of Science in Computer Science -- GPA: 3.99/4.00}{New Orleans, LA}
+      \resumeItemListStart
+        \resumeItem{\textbf{Leadership:} Google Developers Student Club (DSC Lead), Toastmasters (President), SGA (Senator)}
+        %\resumeItem{\textbf{Honors: }President's List (All Semesters), Achievement in Computer Science Scholarship (2020-2021)}
+        \resumeItem{\textbf{Relevant Coursework:} Data Structures and Algorithms, Algorithm Analysis, Python for DS \& AI, Database Management Systems, Cloud Computing, Computer Networks, Operating Systems, Software Design I \& II (Java)}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+  
+
+%
+%-----------PROGRAMMING SKILLS-----------
+\section{Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}\hspace*{1cm}{Java, Python, HTML/CSS, JavaScript, SQL} \\
+     \textbf{Technologies}\hspace*{0.6cm}{Git, Unity, Jupyter Notebook} \\
+     \textbf{Libraries}\hspace*{1.25cm}{NumPy, Pandas, Matplotlib, scikit-learn} \\
+     \textbf{DevOps}\hspace*{1.4cm}{Amazon Web Services (AWS), Terraform, GitLab CI/CD} \\
+     \textbf{Certifications}\hspace*{0.4cm}{AWS Solutions Architect - Associate, AWS Cloud Practitioner} 
+    }}
+ \end{itemize}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+     \resumeSubheading
+      {PayPal}{May 2022 - August 2022}
+      {Incoming Software Engineer Intern}{Austin, TX}
+      \resumeItemListStart
+      \resumeItem {Joining PayPal for an exciting, enriching, and character-building experience this upcoming summer!}
+    \resumeItemListEnd
+    \resumeSubheading
+      {USAA}{May 2021 - July 2021}
+      {Software Engineer Intern (DevOps)}{Plano, TX}
+    \resumeItemListStart
+      \resumeItem {Reduced cluttering of a qTest archive by 84\% and allowed for easier feature-based auditing by designing a new directory structure for publishing automated infrastructure test results that affected 70 projects.}
+      \resumeItem {Enabled automatic AWS resource tagging on one parameter if not provided by a developer or optional manual tagging otherwise by modifying a custom Terraform provider utilized by 55 projects using GoLang.}
+      \resumeItem {Decreased the cost of conducting network connectivity testing on EC2 instances by 92.38\% by developing a selection of 5 AWS Systems Manager (SSM) testing automations using Terraform and GitLab CI/CD.}
+      %\resumeItem {Developed a selection of 5 AWS Systems Manager (SSM) documents and automation using Terraform and GitLab CI/CD which reduced the time it takes to conduct network connectivity testing from 3-4 hours with 2-3 engineers to 35-45 minutes with a single engineer.}
+    \resumeItemListEnd
+    
+    \resumeSubheading
+      {University of New Orleans}{January 2021 - May 2021}
+      {Undergraduate Research Assistant}{New Orleans, LA}
+      \resumeItemListStart
+        \resumeItem{Developed immersive eXtended Reality (XR) games using Unity and C\# under advisement of Dr. Farjana Eishita to discreetly detect 8 types of cognitive distortions and other mental health conditions.}
+        \resumeItem{Converted 42 scenes of an existing cognitive distortion detection game manually from Augmented Reality (AR) to Mixed and Virtual Reality (MR \& VR) for player-experience (PX) comparisons between platforms.}
+        \resumeItem{Conducted moderated PX testing on 9 individuals to identify bugs and ensure effective game-play engagement.}
+      \resumeItemListEnd
+      
+% -----------Multiple Positions Heading-----------
+%    \resumeSubSubheading
+%     {Software Engineer I}{Oct 2014 - Sep 2016}
+%     \resumeItemListStart
+%        \resumeItem{Apache Beam}
+%          {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines}
+%     \resumeItemListEnd
+%    \resumeSubHeadingListEnd
+%-------------------------------------------
+
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{Stock Simple Moving Average (SMA) Pipeline} $|$ \emph{AWS, Python}}{}
+          \resumeItemListStart
+            \resumeItem{Developed an AWS pipeline that computes the Simple Moving Average (SMA) of historical OHLC-type stocks.}
+            \resumeItem{Created the cloud infrastructure using the AWS Python SDK (Boto3) to automatically initialize and connect two S3 buckets, two Lambda functions, one SNS topic, and one DynamoDB NoSQL database table.}
+            \resumeItem{Decreased the time it takes to acquire the SMA of an input file by 99.87\% compared to manual calculation.}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Warframe Inventory Market Info} $|$ \emph{Python}}{}
+          \resumeItemListStart
+            \resumeItem{Developed a program that automatically gathers 4 different attributes about users’ in-game Warframe inventory items, saving users about 52 seconds of work per item page compared to manual calculation.}
+            \resumeItem{Generated a list of inventory items using OpenCV to isolate item names from the inventory-screen image by thresholding the text colors, and by using PyTesseract to read and save the remaining text.}
+            \resumeItem{Enabled better investment decisions and comparisons by collecting the average currency price of the 10 current cheapest live web market value sell-orders using the warframe.market API for each item in the generated item list.}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+
+%-------------------------------------------
+\end{document}
