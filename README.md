@@ -1,2 +1,2 @@
-# resume-update-action
-GitHub Action that compiles an updated LaTeX resume and propagates new version to Google Drive, GitHub Pages, GitHub Repositories, and LinkedIn.
+# Resume Update Action
+GitHub action that keeps my resume up to date on multiple platforms through continuous integration.
