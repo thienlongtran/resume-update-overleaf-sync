@@ -38,6 +38,7 @@ jobs:
           name: resume_resources
           path: ./[resume]*
         
+
   update_resume_repository:
     runs-on: ubuntu-latest
     needs: build_resources
@@ -70,6 +71,7 @@ jobs:
           user_email: 'tltran5@uno.edu'
           user_name: 'thienlongtran'
 
+
   update_current_resume_gdrive:
     runs-on: ubuntu-latest
     needs: build_resources
@@ -89,6 +91,7 @@ jobs:
           name: "ThienTran_Current_Resume.pdf"
           overwrite: "true"
   
+
   upload_to_resume_history_gdrive:
     runs-on: ubuntu-latest
     needs: update_current_resume_gdrive
@@ -110,6 +113,7 @@ jobs:
           folderId: ${{ secrets.RESUME_HISTORY_GDRIVE_FOLDERID }}
           name: "ThienTran_${{ env.CURRENT_DATE_AND_TIME }}.pdf"
           
+
   update_personal_website:
     runs-on: ubuntu-latest
     needs: build_resources
@@ -150,7 +154,6 @@ jobs:
           user_name: 'thienlongtran'
           
       - name: Update LinkedIn Featured Preview (1/2)
-        run: 
         run: |
               sleep 180
               curl 'https://www.linkedin.com/post-inspector-api/postInspector/https%3A%2F%2Fthienlongtran.github.io%2Fassets%2Fresume%2Fresume.html' \
