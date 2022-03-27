@@ -1,0 +1,192 @@
+name: Propagate Resume Updates
+
+on:
+  push:
+    paths:
+      - "resume.tex"
+      - ".github/workflows/main.yml"
+      
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+jobs:
+  build_resources:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+          
+      - name: LaTeX PDF Compilation
+        uses: dante-ev/latex-action@2021-A
+        with:
+          root_file: resume.tex
+            
+      - name: Install ImageMagick & GhostScript
+        run: |
+              sudo apt-get install imagemagick
+              sudo apt-get install ghostscript
+              sudo sed -i 's/^.*policy.*coder.*none.*PDF.*//' /etc/ImageMagick-6/policy.xml
+              sudo sed -i_bak 's/rights="none" pattern="PDF"/rights="read | write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml
+            
+      - name: Generate Resume PNG Image 
+        run: convert -verbose -density 500 -background white -alpha remove -alpha off resume.pdf -quality 100 resume.png
+        
+      - name: Save Resume Resources
+        uses: actions/upload-artifact@v2
+        with:
+          name: resume_resources
+          path: ./[resume]*
+        
+  update_resume_repository:
+    runs-on: ubuntu-latest
+    needs: build_resources
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: resume_resources
+        
+      - name: Update Image Preview in Repository
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'resume.png'
+          destination_repo: 'thienlongtran/resume'
+          destination_branch: 'master'
+          user_email: 'tltran5@uno.edu'
+          user_name: 'thienlongtran'
+            
+      - name: Update PDF in Repository
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'resume.pdf'
+          destination_repo: 'thienlongtran/resume'
+          destination_branch: 'master'
+          user_email: 'tltran5@uno.edu'
+          user_name: 'thienlongtran'
+
+  update_current_resume_gdrive:
+    runs-on: ubuntu-latest
+    needs: build_resources
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: resume_resources
+
+      - name: Update Current Resume (Google Drive)
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: ${{ secrets.credentials }}
+          filename: "resume.pdf"
+          folderId: ${{ secrets.CURRENT_RESUME_GDRIVE_FOLDERID }}
+          name: "ThienTran_Current_Resume.pdf"
+          overwrite: "true"
+  
+  upload_to_resume_history_gdrive:
+    runs-on: ubuntu-latest
+    needs: update_current_resume_gdrive
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: resume_resources
+          
+      - name: Set Current Date and Time
+        run: echo "CURRENT_DATE_AND_TIME=$(TZ=America/New_Orleans date +'%D_%H:%M:%S')" >> ${GITHUB_ENV}
+
+      - name: Upload to Resume History (Google Drive)
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: ${{ secrets.credentials }}
+          filename: "resume.pdf"
+          folderId: ${{ secrets.RESUME_HISTORY_GDRIVE_FOLDERID }}
+          name: "ThienTran_${{ env.CURRENT_DATE_AND_TIME }}.pdf"
+          
+  update_personal_website:
+    runs-on: ubuntu-latest
+    needs: build_resources
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: resume_resources
+          
+      - name: Renaming Resume PDF and PNG Files
+        run: |
+              mv resume.pdf Thien_Tran_Resume.pdf
+              mv resume.png Thien_Tran_Resume.png
+              
+      - name: Pushing Resume PDF to Website Repository
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'Thien_Tran_Resume.pdf'
+          destination_repo: 'thienlongtran/thienlongtran.github.io'
+          destination_folder: 'assets'
+          destination_branch: 'master'
+          user_email: 'tltran5@uno.edu'
+          user_name: 'thienlongtran'
+          
+      - name: Pushing Resume PNG to Website Repository
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'Thien_Tran_Resume.png'
+          destination_repo: 'thienlongtran/thienlongtran.github.io'
+          destination_folder: 'assets'
+          destination_branch: 'master'
+          user_email: 'tltran5@uno.edu'
+          user_name: 'thienlongtran'
+          
+      - name: Update LinkedIn Featured Preview (1/2)
+        run: 
+        run: |
+              sleep 180
+              curl 'https://www.linkedin.com/post-inspector-api/postInspector/https%3A%2F%2Fthienlongtran.github.io%2Fassets%2Fresume%2Fresume.html' \
+              -H 'authority: www.linkedin.com' \
+              -H 'sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="97", "Chromium";v="97"' \
+              -H 'sec-ch-ua-mobile: ?0' \
+              -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' \
+              -H 'accept: application/json, text/javascript, */*; q=0.01' \
+              -H 'csrf-token: ajax:2832840141864628705' \
+              -H 'x-restli-protocol-version: 2.0.0' \
+              -H 'x-requested-with: XMLHttpRequest' \
+              -H 'sec-ch-ua-platform: "Linux"' \
+              -H 'sec-fetch-site: same-origin' \
+              -H 'sec-fetch-mode: cors' \
+              -H 'sec-fetch-dest: empty' \
+              -H 'referer: https://www.linkedin.com/post-inspector/' \
+              -H 'accept-language: en-US,en;q=0.9,es;q=0.8' \
+              -H 'cookie: bcookie="v=2&a7660790-0fc9-4756-8cc7-d2a3b5bfcc0a"; bscookie="v=1&20201005201626f260ebe4-993c-469b-8f77-dda7550eb237AQHFo8Ri0MrSZo2BKUEiR1Tusrfdh77o"; G_ENABLED_IDPS=google; __ssid=c84e334e-c761-4e1f-a6c8-452ba75e175f; MUID=076805d5366e4c4f8ebb0b1ac8cb1cec; visit="v=1&G"; g_state={"i_l":0}; JSESSIONID="ajax:2832840141864628705"; liap=true; timezone=Asia/Saigon; li_theme=light; li_theme_set=app; li_ep_auth_context=AE5hcHA9bGVhcm5pbmcsYWlkPTIxNjM0MjYsaWlkPTYxNTkyMzY5LHBpZD0xNTI0NTQ5NDgsZXhwPTE2NTIyODI0MDQ1NzIsY3VyPXRydWUB7QA_HhP9ZziVp-AuRZgGZVqBfVU; lang=v=2&lang=en-us; li_at=AQEFALoBAAAAAAcbYPoAAAF_DcxJCAAAAX9domcUTgAAXXVybjpsaTplbnRlcnByaXNlUHJvZmlsZToodXJuOmxpOmVudGVycHJpc2VBY2NvdW50OjIxNjM0MjYsMTUyNDU0OTQ4KV51cm46bGk6bWVtYmVyOjg1MDA4MjUxMMHw4Q2eMf0HK499pzFp-GoYwVmMi6o2KcfUos9RISNO2inIkKvp4KdSTHn8nnTfr9UzpkY-v2Chi7DjjY-kdiee0GB3JJCcdjg00uY0nvfyoVp2BW0gREeCP2_Tee5LAm6HdxFgVUn7rLUAVySQ4QaRI2i40PnIG1ExI7xo0biFV8wQSpuO8moGPJJJ_Na8J8ZBr38; lidc="b=TB10:s=T:r=T:a=T:p=T:g=3925:u=363:x=1:i=1646039854:t=1646114674:v=2:sig=AQEzbUTwV8LF-CeXeq5HL471CRMK828-"; li_mc=MTsyMTsxNjQ2MDQ4MDgxOzE7MDIx8CszttWGiberceoT6OO3FE4KAnr7kScfBv7Ay0Sk7Mg=; UserMatchHistory=AQJU1budK5Hi0gAAAX9AHIJuekutLR9lNFSpD2mdusT-_gy40i8VdN84NSAFVOD8BX7Tw7gLp0CQ1EoFK2GcRxmOY4Jx3sB_G1WR_zjUGnVGp8ZjsLabTb1G4qT7TSWtNf2tyDWGiJPNxgPgKkCq6iaEh0UP07MZ-5zRCbPMR1fV-AWaGx3a1Nda1eEVAEYD8uBR_bDwIsAVD2TOr0KLYaGRP00z84Et6IInSftSEQ06B8LoX9OYtLcm5a0XuFwGhcgZ1xG9Gw'
+      
+      - name: Update LinkedIn Featured Preview (2/2)
+        run: 
+        run: |
+              sleep 180
+              curl 'https://www.linkedin.com/post-inspector-api/postInspector/https%3A%2F%2Fthienlongtran.github.io%2Fassets%2Fresume%2Fresume.html' \
+              -H 'authority: www.linkedin.com' \
+              -H 'sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="97", "Chromium";v="97"' \
+              -H 'sec-ch-ua-mobile: ?0' \
+              -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' \
+              -H 'accept: application/json, text/javascript, */*; q=0.01' \
+              -H 'csrf-token: ajax:2832840141864628705' \
+              -H 'x-restli-protocol-version: 2.0.0' \
+              -H 'x-requested-with: XMLHttpRequest' \
+              -H 'sec-ch-ua-platform: "Linux"' \
+              -H 'sec-fetch-site: same-origin' \
+              -H 'sec-fetch-mode: cors' \
+              -H 'sec-fetch-dest: empty' \
+              -H 'referer: https://www.linkedin.com/post-inspector/' \
+              -H 'accept-language: en-US,en;q=0.9,es;q=0.8' \
+              -H 'cookie: bcookie="v=2&a7660790-0fc9-4756-8cc7-d2a3b5bfcc0a"; bscookie="v=1&20201005201626f260ebe4-993c-469b-8f77-dda7550eb237AQHFo8Ri0MrSZo2BKUEiR1Tusrfdh77o"; G_ENABLED_IDPS=google; __ssid=c84e334e-c761-4e1f-a6c8-452ba75e175f; MUID=076805d5366e4c4f8ebb0b1ac8cb1cec; visit="v=1&G"; g_state={"i_l":0}; JSESSIONID="ajax:2832840141864628705"; liap=true; timezone=Asia/Saigon; li_theme=light; li_theme_set=app; li_ep_auth_context=AE5hcHA9bGVhcm5pbmcsYWlkPTIxNjM0MjYsaWlkPTYxNTkyMzY5LHBpZD0xNTI0NTQ5NDgsZXhwPTE2NTIyODI0MDQ1NzIsY3VyPXRydWUB7QA_HhP9ZziVp-AuRZgGZVqBfVU; lang=v=2&lang=en-us; li_at=AQEFALoBAAAAAAcbYPoAAAF_DcxJCAAAAX9domcUTgAAXXVybjpsaTplbnRlcnByaXNlUHJvZmlsZToodXJuOmxpOmVudGVycHJpc2VBY2NvdW50OjIxNjM0MjYsMTUyNDU0OTQ4KV51cm46bGk6bWVtYmVyOjg1MDA4MjUxMMHw4Q2eMf0HK499pzFp-GoYwVmMi6o2KcfUos9RISNO2inIkKvp4KdSTHn8nnTfr9UzpkY-v2Chi7DjjY-kdiee0GB3JJCcdjg00uY0nvfyoVp2BW0gREeCP2_Tee5LAm6HdxFgVUn7rLUAVySQ4QaRI2i40PnIG1ExI7xo0biFV8wQSpuO8moGPJJJ_Na8J8ZBr38; lidc="b=TB10:s=T:r=T:a=T:p=T:g=3925:u=363:x=1:i=1646039854:t=1646114674:v=2:sig=AQEzbUTwV8LF-CeXeq5HL471CRMK828-"; li_mc=MTsyMTsxNjQ2MDQ4MDgxOzE7MDIx8CszttWGiberceoT6OO3FE4KAnr7kScfBv7Ay0Sk7Mg=; UserMatchHistory=AQJU1budK5Hi0gAAAX9AHIJuekutLR9lNFSpD2mdusT-_gy40i8VdN84NSAFVOD8BX7Tw7gLp0CQ1EoFK2GcRxmOY4Jx3sB_G1WR_zjUGnVGp8ZjsLabTb1G4qT7TSWtNf2tyDWGiJPNxgPgKkCq6iaEh0UP07MZ-5zRCbPMR1fV-AWaGx3a1Nda1eEVAEYD8uBR_bDwIsAVD2TOr0KLYaGRP00z84Et6IInSftSEQ06B8LoX9OYtLcm5a0XuFwGhcgZ1xG9Gw'
