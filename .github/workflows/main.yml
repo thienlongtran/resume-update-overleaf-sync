@@ -49,7 +49,7 @@ jobs:
         with:
           name: resume_resources
         
-      - name: Update Image Preview in Repository
+      - name: Update Image Preview
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
@@ -60,12 +60,23 @@ jobs:
           user_email: 'tltran5@uno.edu'
           user_name: 'thienlongtran'
             
-      - name: Update PDF in Repository
+      - name: Update PDF File
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
           source_file: 'resume.pdf'
+          destination_repo: 'thienlongtran/resume'
+          destination_branch: 'master'
+          user_email: 'tltran5@uno.edu'
+          user_name: 'thienlongtran'
+          
+      - name: Update LaTeX File
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: 'resume.tex'
           destination_repo: 'thienlongtran/resume'
           destination_branch: 'master'
           user_email: 'tltran5@uno.edu'
@@ -89,12 +100,11 @@ jobs:
           filename: "resume.pdf"
           folderId: ${{ secrets.CURRENT_RESUME_GDRIVE_FOLDERID }}
           name: "ThienTran_Current_Resume.pdf"
-          overwrite: "true"
-  
-
+          
+          
   upload_to_resume_history_gdrive:
     runs-on: ubuntu-latest
-    needs: update_current_resume_gdrive
+    needs: build_resources
     steps:
       - uses: actions/checkout@v2
       
