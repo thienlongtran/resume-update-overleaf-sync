@@ -100,6 +100,7 @@ jobs:
           filename: "resume.pdf"
           folderId: ${{ secrets.CURRENT_RESUME_GDRIVE_FOLDERID }}
           name: "ThienTran_Current_Resume.pdf"
+          overwrite: "true"
           
           
   upload_to_resume_history_gdrive:
