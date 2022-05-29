@@ -11,6 +11,29 @@ on:
 
 
 jobs:
+  build_banner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+
+      - name: LaTeX PDF Compilation
+        uses: dante-ev/latex-action@2021-A
+        with:
+          root_file: gha-notice.tex
+          
+      - name: Set Current Date and Time
+        run: echo "CURRENT_DATE_AND_TIME=$(TZ=America/New_Orleans date +'%D_%H:%M:%S')" >> ${GITHUB_ENV}
+
+      - name: Upload to Resume History (Google Drive)
+        uses: adityak74/google-drive-upload-git-action@main
+        with:
+          credentials: ${{ secrets.credentials }}
+          filename: "gha-notice.pdf"
+          folderId: ${{ secrets.RESUME_HISTORY_GDRIVE_FOLDERID }}
+          name: "ThienTran_${{ env.CURRENT_DATE_AND_TIME }}.pdf"
+          
+          
   build_resources:
     runs-on: ubuntu-latest
     steps:
