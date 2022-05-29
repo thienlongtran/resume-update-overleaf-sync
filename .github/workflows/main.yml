@@ -21,17 +21,12 @@ jobs:
         uses: dante-ev/latex-action@2021-A
         with:
           root_file: gha-notice.tex
-          
-      - name: Set Current Date and Time
-        run: echo "CURRENT_DATE_AND_TIME=$(TZ=America/New_Orleans date +'%D_%H:%M:%S')" >> ${GITHUB_ENV}
-
-      - name: Upload to Resume History (Google Drive)
-        uses: adityak74/google-drive-upload-git-action@main
+      
+      - name: Save GitHub Banner
+        uses: actions/upload-artifact@v2
         with:
-          credentials: ${{ secrets.credentials }}
-          filename: "gha-notice.pdf"
-          folderId: ${{ secrets.RESUME_HISTORY_GDRIVE_FOLDERID }}
-          name: "ThienTran_${{ env.CURRENT_DATE_AND_TIME }}.pdf"
+          name: github_banner
+          path: ./gha-notice.pdf
           
           
   build_resources:
@@ -144,12 +139,15 @@ jobs:
 
   update_personal_website:
     runs-on: ubuntu-latest
-    needs: build_resources
+    needs: [build_banner, build_resources]
     steps:
-      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: resume_resources
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: github_banner
       
       - name: Renaming Resume PDF and PNG Files
         run: |
