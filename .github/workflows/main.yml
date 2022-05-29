@@ -130,13 +130,12 @@ jobs:
       
       - name: Renaming Resume PDF and PNG Files
         run: |
-              mv resume.pdf Thien_Tran_Resume.pdf
               mv resume.png Thien_Tran_Resume.png
       
       - name: Add GitHub Actions Notice to Resume PDF
         run: |
               sudo apt-get install pdftk
-              pdftk *.pdf cat output PDF3.pdf
+              pdftk *.pdf cat output Thien_Tran_Resume.pdf
 
       - name: Pushing Resume PDF to Website Repository
         uses: dmnemec/copy_file_to_another_repo_action@main
