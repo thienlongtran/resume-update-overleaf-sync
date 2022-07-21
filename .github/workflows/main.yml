@@ -70,33 +70,33 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'resume.png'
-          destination_repo: 'thienlongtran/resume'
-          destination_branch: 'master'
-          user_email: 'tltran5@uno.edu'
-          user_name: 'thienlongtran'
+          source_file: "resume.png"
+          destination_repo: "thienlongtran/resume"
+          destination_branch: "master"
+          user_email: "tltran5@uno.edu"
+          user_name: "thienlongtran"
             
       - name: Update PDF File
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'resume.pdf'
-          destination_repo: 'thienlongtran/resume'
-          destination_branch: 'master'
-          user_email: 'tltran5@uno.edu'
-          user_name: 'thienlongtran'
+          source_file: "resume.pdf"
+          destination_repo: "thienlongtran/resume"
+          destination_branch: "master"
+          user_email: "tltran5@uno.edu"
+          user_name: "thienlongtran"
           
       - name: Update LaTeX File
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'resume.tex'
-          destination_repo: 'thienlongtran/resume'
-          destination_branch: 'master'
-          user_email: 'tltran5@uno.edu'
-          user_name: 'thienlongtran'
+          source_file: "resume.tex"
+          destination_repo: "thienlongtran/resume"
+          destination_branch: "master"
+          user_email: "tltran5@uno.edu"
+          user_name: "thienlongtran"
 
 
   update_current_resume_gdrive:
@@ -163,21 +163,21 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'Thien_Tran_Resume.pdf'
-          destination_repo: 'thienlongtran/thienlongtran.github.io'
-          destination_folder: 'assets'
-          destination_branch: 'master'
-          user_email: 'tltran5@uno.edu'
-          user_name: 'thienlongtran'
+          source_file: "Thien_Tran_Resume.pdf"
+          destination_repo: "thienlongtran/thienlongtran.github.io"
+          destination_folder: "assets"
+          destination_branch: "master"
+          user_email: "tltran5@uno.edu"
+          user_name: "thienlongtran"
           
       - name: Pushing Resume PNG to Website Repository
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: 'Thien_Tran_Resume.png'
-          destination_repo: 'thienlongtran/thienlongtran.github.io'
-          destination_folder: 'assets'
-          destination_branch: 'master'
-          user_email: 'tltran5@uno.edu'
-          user_name: 'thienlongtran'
+          source_file: "Thien_Tran_Resume.png"
+          destination_repo: "thienlongtran/thienlongtran.github.io"
+          destination_folder: "assets"
+          destination_branch: "master"
+          user_email: "tltran5@uno.edu"
+          user_name: "thienlongtran"
